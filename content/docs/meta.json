@@ -1,6 +1,10 @@
 {
+    "title": "EJDA Chat",
+    "description": "Documentation pour EJDA Chat, une application de messagerie sécurisée et collaborative.",
     "pages": [
         "index",
+        "---Support---",
+        "faq",
         "---Développeurs---",
         "developpeurs"
     ]
