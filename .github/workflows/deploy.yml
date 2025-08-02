@@ -6,16 +6,12 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,18 +28,17 @@ jobs:
       - name: Build
         run: bun run build
       
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./out
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Create unique branch name
+        id: branch
+        run: echo "branch_name=gh-pages-$(date +%s)" >> $GITHUB_OUTPUT
+      
+      - name: Deploy to GitHub Pages branch
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git checkout --orphan ${{ steps.branch.outputs.branch_name }}
+          git rm -rf .
+          cp -r out/* .
+          git add .
+          git commit -m "Deploy to GitHub Pages - $(date)"
+          git push origin ${{ steps.branch.outputs.branch_name }}
