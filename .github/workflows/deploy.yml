@@ -34,24 +34,24 @@ jobs:
           git config --local user.name "GitHub Action"
           
           # Create a clean deployment directory
-          cd /tmp
-          git clone https://github.com/${{ github.repository }}.git deploy-repo
-          cd deploy-repo
+          mkdir -p /tmp/deploy
+          cp -r out/* /tmp/deploy/
           
-          # Switch to github-pages branch (create if doesn't exist)
+          # Fetch the repository and switch to github-pages branch
           git fetch origin
           if git rev-parse --verify origin/github-pages >/dev/null 2>&1; then
             git checkout github-pages
+            git reset --hard origin/github-pages
           else
             git checkout --orphan github-pages
-            git rm -rf . 2>/dev/null || true
           fi
           
           # Clear everything and copy only the built files
-          rm -rf *
-          cp -r ${{ github.workspace }}/out/* .
+          git rm -rf . 2>/dev/null || true
+          find . -name ".*" -not -name ".git" -not -name ".github" -delete 2>/dev/null || true
+          cp -r /tmp/deploy/* .
           
           # Commit and push
           git add .
           git commit -m "Deploy to GitHub Pages - $(date)" || exit 0
-          git push https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git github-pages
+          git push origin github-pages
