@@ -3,11 +3,14 @@
     "description": "Documentation pour EJDA Chat, une application de messagerie sécurisée et collaborative.",
     "pages": [
         "index",
-        "---Support---",
+        "---Utilisateurs---",
+        "bien-commencer",
         "faq",
         "---Développeurs---",
         "environnement-de-developpement",
         "tester-avec-vite",
-        "construire-l-application"
+        "construire-l-application",
+        "---Ressources---",
+        "contribuer"
     ]
 }
