@@ -28,17 +28,29 @@ jobs:
       - name: Build
         run: bun run build
       
-      - name: Create unique branch name
-        id: branch
-        run: echo "branch_name=gh-pages-$(date +%s)" >> $GITHUB_OUTPUT
-      
       - name: Deploy to GitHub Pages branch
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git checkout --orphan ${{ steps.branch.outputs.branch_name }}
-          git rm -rf .
-          cp -r out/* .
+          
+          # Create a temporary directory for the deployment
+          mkdir -p /tmp/deploy
+          cp -r out/* /tmp/deploy/
+          
+          # Switch to github-pages branch (create if doesn't exist)
+          git fetch origin
+          if git rev-parse --verify origin/github-pages >/dev/null 2>&1; then
+            git checkout github-pages
+            git pull origin github-pages
+          else
+            git checkout --orphan github-pages
+          fi
+          
+          # Clear everything and copy only the built files
+          git rm -rf . 2>/dev/null || true
+          cp -r /tmp/deploy/* .
+          
+          # Commit and push
           git add .
-          git commit -m "Deploy to GitHub Pages - $(date)"
-          git push origin ${{ steps.branch.outputs.branch_name }}
+          git commit -m "Deploy to GitHub Pages - $(date)" || exit 0
+          git push origin github-pages
