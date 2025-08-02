@@ -6,6 +6,8 @@
         "---Support---",
         "faq",
         "---Développeurs---",
-        "developpeurs"
+        "environnement-de-developpement",
+        "tester-avec-vite",
+        "construire-l-application"
     ]
 }
