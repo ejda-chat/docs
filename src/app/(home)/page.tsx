@@ -35,7 +35,7 @@ export default function HomePage() {
       <div className="text-center text-fd-muted-foreground">
         <p>
           Des questions ? Visitez notre{' '}
-          <a href="#" className="text-fd-foreground font-semibold underline hover:text-blue-500 transition-colors">
+          <a href="https://github.com/ejda-chat/ejda-chat" className="text-fd-foreground font-semibold underline hover:text-blue-500 transition-colors">
             dépôt GitHub
           </a>
         </p>
