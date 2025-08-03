@@ -1,16 +1,14 @@
 import { createMDX } from 'fumadocs-mdx/next';
 
-const withMDX = (...args) => {
-  try {
-    return createMDX()(...args);
-  } catch (err) {
-    // Ensure the error is an instance of Error
-    if (!(err instanceof Error)) {
-      throw new Error(typeof err === 'string' ? err : JSON.stringify(err));
-    }
-    throw err;
+let withMDX;
+try {
+  withMDX = createMDX();
+} catch (err) {
+  if (!(err instanceof Error)) {
+    throw new Error(typeof err === 'string' ? err : JSON.stringify(err));
   }
-};
+  throw err;
+}
 
 /** @type {import('next').NextConfig} */
 const config = {
