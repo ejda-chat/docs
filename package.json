@@ -12,7 +12,7 @@
     "@orama/orama": "^3.1.11",
     "fumadocs-core": "^15.7.10",
     "fumadocs-mdx": "11.7.4",
-    "fumadocs-ui": "^15.7.10",
+    "fumadocs-ui": "^16.0.12",
     "lucide-react": "^0.539.0",
     "next": "16.0.1",
     "react": "^19.1.0",
